@@ -9,6 +9,9 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 
 import com.example.sj2.domain.Board;
 import com.example.sj2.domain.QBoard;
+import com.example.sj2.dto.BoardListRcntDTO;
+import com.example.sj2.dto.PageRequestDTO;
+import com.example.sj2.dto.PageResponseDTO;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPQLQuery;
 
@@ -74,8 +77,14 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
         
     }
 
+    @Override
+    public PageResponseDTO<BoardListRcntDTO> searchDTORcnt(PageRequestDTO requestDTO) {
+        
+        return null;
+    }
 
-    // 페이징처리
+
+    // 페이징처리 2
     // @Override
     // public Page<Board> search1(Pageable pageable) {
 
@@ -100,7 +109,7 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
     // }
 
 
-    // QueryDsl를 이용한 데이터 검색
+    // QueryDsl를 이용한 데이터 검색 1
     // @Override
     // public List<Board> search1() {
 

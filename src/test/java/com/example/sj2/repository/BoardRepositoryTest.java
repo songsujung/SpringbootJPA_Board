@@ -153,7 +153,7 @@ public class BoardRepositoryTest {
     }
 
 
-    // QueryDsl를 이용한 페이징 처리
+    // QueryDsl를 이용한 페이징 처리 2
     // @Test
     // public void testSearch1(){
 
@@ -164,7 +164,7 @@ public class BoardRepositoryTest {
 
     // }
 
-    // QueryDsl를 이용한 데이터 검색
+    // QueryDsl를 이용한 데이터 검색 1
     // @Test
     // public void testSearch1() {
     //     boardRepository.search1();
