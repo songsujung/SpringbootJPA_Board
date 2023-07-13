@@ -136,6 +136,39 @@ public class BoardRepositoryTest {
         log.info(result);
 
     }
+
+
+    // 페이징 + switch문 검색 
+    @Test
+    public void testSearch1(){
+
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("bno").descending());
+
+        Page<Board> result = boardRepository.search1("tcw" , "1" , pageable);
+   
+        log.info(result.getTotalElements());
+
+        result.get().forEach(b -> log.info(b));
+
+    }
+
+
+    // QueryDsl를 이용한 페이징 처리
+    // @Test
+    // public void testSearch1(){
+
+    //     // 첫번째 페이지를 0으로 설정하고, 한페이지 당 10개의 데이터가 나오도록 반환하고, bno를 내림차순 정렬
+    //     Pageable pageable = PageRequest.of(0, 10, Sort.by("bno").descending());
+
+    //     boardRepository.search1(pageable);
+
+    // }
+
+    // QueryDsl를 이용한 데이터 검색
+    // @Test
+    // public void testSearch1() {
+    //     boardRepository.search1();
+    // }
     
 
 

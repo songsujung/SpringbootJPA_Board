@@ -9,8 +9,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.example.sj2.domain.Board;
+import com.example.sj2.repository.search.BoardSearch;
 
-public interface BoardRepository  extends JpaRepository<Board, Long> {
+public interface BoardRepository  extends JpaRepository<Board, Long>, BoardSearch{
 
     // 검색(title로 조회)
     // title을 찾고, 결과 값을 Board타입의 리스트로 반환 - 방식1
@@ -35,5 +36,6 @@ public interface BoardRepository  extends JpaRepository<Board, Long> {
     // 검색(JPQL사용, b.title로 비교해서 bno, title을 조회 + 페이징추가)
     @Query("select b.bno,b.title from Board b where b.title like %:title%")
     Page<Object[]> searchTitle3(@Param("title") String title, Pageable pageable);
+    
     
 }
