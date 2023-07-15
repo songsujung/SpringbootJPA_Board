@@ -79,7 +79,11 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
 
     @Override
     public PageResponseDTO<BoardListRcntDTO> searchDTORcnt(PageRequestDTO requestDTO) {
-        
+
+        Pageable pageable = makePageable(requestDTO);
+
+        QBoard board = QBoard.board;
+
         return null;
     }
 

@@ -152,6 +152,18 @@ public class BoardRepositoryTest {
 
     }
 
+    // 댓글갯수가 포함된 리스트 조회
+    @Test
+    public void testListWithRcnt(){
+
+        List<Object[]> result = boardRepository.getListWithRcnt();
+
+        for (Object[] result2 : result) {
+            log.info(Arrays.toString(result2));
+        }
+    }
+
+
 
     // QueryDsl를 이용한 페이징 처리 2
     // @Test

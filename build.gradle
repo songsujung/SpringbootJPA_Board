@@ -45,6 +45,9 @@ dependencies {
         "jakarta.annotation:jakarta.annotation-api",
         "com.querydsl:querydsl-apt:${queryDslVersion}:jakarta")
 
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+
 }
 
 tasks.named('test') {

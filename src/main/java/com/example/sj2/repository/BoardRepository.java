@@ -36,6 +36,11 @@ public interface BoardRepository  extends JpaRepository<Board, Long>, BoardSearc
     // 검색(JPQL사용, b.title로 비교해서 bno, title을 조회 + 페이징추가)
     @Query("select b.bno,b.title from Board b where b.title like %:title%")
     Page<Object[]> searchTitle3(@Param("title") String title, Pageable pageable);
+
+    // 댓글 갯수가 포함된 리스트 조회
+    //b.bno, b.title, b.writer 3개가 Object의 배열로
+    @Query("select b.bno, b.title, b.writer , count(r) from Board b left outer join Reply r on r.board = b group by b order by b.bno desc")
+    List<Object[]> getListWithRcnt();
     
     
 }
