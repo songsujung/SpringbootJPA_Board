@@ -29,7 +29,7 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
         super(Board.class);
     }
 
-    // 페이징 + switch문 검색 
+    // 페이징 + switch문 검색
     @Override
     // public List<Board> search1() { : 목록 조회
     public Page<Board> search1(String searchType , String keyword , Pageable pageable) {
@@ -47,7 +47,7 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
             // tc -> [t,c]
             String[] searchArr = searchType.split("");
 
-            // BooleanBuiler : ()를 우선순위 연산자로 사용하기 위한 코드 
+            // BooleanBuiler : ()를 우선순위 연산자로 사용하기 위한 코드
             BooleanBuilder searchBuilder = new BooleanBuilder();
 
             for (String type : searchArr) {
@@ -78,7 +78,7 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
         log.info(count);
 
         return new PageImpl<>(list, pageable, count);
-        
+
     }
 
 
@@ -191,6 +191,9 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
 
         }// end if
 
+        // 페이징 처리
+        this.getQuerydsl().applyPagination(pageable, query);
+
         query.groupBy(board);
 
         // Projections.bean() : DTO 객체를 선택하기 위해 사용되며, BoardListRcntDTO 클래스와 해당 클래스의 필드 값을 지정
@@ -207,9 +210,6 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
                 );
 
         List<BoardListRcntDTO> list = listQuery.fetch();
-
-        // 페이징 처리
-        this.getQuerydsl().applyPagination(pageable, query);
 
         log.info("========================");
         log.info(list);
@@ -245,7 +245,7 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
     //     log.info(count);
 
     //     return null;
-        
+
     // }
 
 
@@ -267,11 +267,12 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
     //     log.info(count);
 
     //     return null;
-        
+
     // }
 
-    
 
 
-    
+
+
 }
+
