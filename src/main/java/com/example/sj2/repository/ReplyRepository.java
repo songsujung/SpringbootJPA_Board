@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface ReplyRepository extends JpaRepository<Reply, Long> {
 
-    //JQPL
+    // 조회 (JQPL)
     @Query("select r from Reply r where r.board.bno =:bno")
     Page<Reply> listBoard(@Param("bno") Long bno, Pageable pageable);
 

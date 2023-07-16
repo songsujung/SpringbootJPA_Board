@@ -62,7 +62,7 @@ public class ReplyRepositoryTest {
 //        }// end for
 //    }
 
-    // 조회
+    // 조회 (JQPL)
     @Test
     public void testListBaord(){
 

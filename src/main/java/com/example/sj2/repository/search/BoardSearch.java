@@ -18,6 +18,9 @@ public interface BoardSearch {
     // 페이징 + switch문 검색
     Page<Board> search1(String searchType , String keyword , Pageable pageable);
 
+    // 댓글 갯수가 포함된 리스트 조회
+    Page<Object[]> searchWithRcnt(String searchType , String keyword , Pageable pageable);
+
     // 서비스쪽에서 변환 할 필요 없음
     PageResponseDTO<BoardListRcntDTO> searchDTORcnt (PageRequestDTO requestDTO);
     
@@ -29,6 +32,8 @@ public interface BoardSearch {
 
         return pageable;
     }
+
+
 
     // 페이징처리 2
     //Page<Board> search1(Pageable pageable);

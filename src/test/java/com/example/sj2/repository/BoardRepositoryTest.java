@@ -152,7 +152,7 @@ public class BoardRepositoryTest {
 
     }
 
-    // 댓글갯수가 포함된 리스트 조회
+    // 댓글갯수가 포함된 리스트 조회 (JPQL)
     @Test
     public void testListWithRcnt(){
 
@@ -161,6 +161,14 @@ public class BoardRepositoryTest {
         for (Object[] result2 : result) {
             log.info(Arrays.toString(result2));
         }
+    }
+
+    // 댓글갯수가 포함된 리스트 조회 (Querydsl Join)
+    @Test
+    public void testLishWithRcntSearch(){
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("bno").descending());
+
+        boardRepository.searchWithRcnt("tcw", "1", pageable);
     }
 
 

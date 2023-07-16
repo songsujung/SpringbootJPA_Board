@@ -38,7 +38,8 @@ public interface BoardRepository  extends JpaRepository<Board, Long>, BoardSearc
     Page<Object[]> searchTitle3(@Param("title") String title, Pageable pageable);
 
     // 댓글 갯수가 포함된 리스트 조회
-    //b.bno, b.title, b.writer 3개가 Object의 배열로
+    // b.bno, b.title, b.writer 3개가 Object의 배열로
+    // JQPL : 조회는 가능하지만 수정은 안됨 (Querydsl사용해야함)
     @Query("select b.bno, b.title, b.writer , count(r) from Board b left outer join Reply r on r.board = b group by b order by b.bno desc")
     List<Object[]> getListWithRcnt();
     
