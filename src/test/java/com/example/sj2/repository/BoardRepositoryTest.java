@@ -4,6 +4,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.sj2.dto.BoardListRcntDTO;
+import com.example.sj2.dto.PageRequestDTO;
+import com.example.sj2.dto.PageResponseDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -152,7 +155,7 @@ public class BoardRepositoryTest {
 
     }
 
-    // 댓글갯수가 포함된 리스트 조회 (JPQL)
+    // 댓글 개수가 포함된 리스트 조회 (JPQL)
     @Test
     public void testListWithRcnt(){
 
@@ -163,12 +166,24 @@ public class BoardRepositoryTest {
         }
     }
 
-    // 댓글갯수가 포함된 리스트 조회 (Querydsl Join)
+    // 검색 (댓글 게수가 포함된 리스트) (Querydsl Join)
     @Test
-    public void testLishWithRcntSearch(){
+    public void testListSearchWithRcnt(){
         Pageable pageable = PageRequest.of(0, 10, Sort.by("bno").descending());
 
         boardRepository.searchWithRcnt("tcw", "1", pageable);
+    }
+
+    // 검색 (댓글 개수가 포함된 리스트) (Querydsl Join)_DTO로 반환
+    @Test
+    public void testListSearchDTORcnt(){
+
+        PageRequestDTO requestDTO = new PageRequestDTO();
+
+        PageResponseDTO<BoardListRcntDTO> responseDTO =
+                boardRepository.searchDTORcnt(requestDTO);
+
+        log.info(responseDTO);
     }
 
 

@@ -30,9 +30,5 @@ public class PageRequestDTO {
         this.type = type;
         this.keyword = keyword;
     }
-
-
-
-
     
 }

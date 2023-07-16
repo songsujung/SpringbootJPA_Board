@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import com.example.sj2.domain.QReply;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Projections;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -80,16 +81,8 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
         
     }
 
-    @Override
-    public PageResponseDTO<BoardListRcntDTO> searchDTORcnt(PageRequestDTO requestDTO) {
 
-        Pageable pageable = makePageable(requestDTO);
-
-        QBoard board = QBoard.board;
-
-        return null;
-    }
-
+    // 검색(댓글 개수가 포함된 리스트 조회) (Querydsl Join)
     @Override
     public Page<Object[]> searchWithRcnt(String searchType, String keyword, Pageable pageable) {
 
@@ -154,6 +147,80 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
         log.info("count: " + count );
 
         return new PageImpl<>(arrList, pageable, count);
+    }
+
+
+    // 검색(댓글 개수가 포함된 리스트 조회)_DTO로 반환
+    @Override
+    public PageResponseDTO<BoardListRcntDTO> searchDTORcnt(PageRequestDTO requestDTO) {
+
+        Pageable pageable = makePageable(requestDTO);
+
+        QBoard board = QBoard.board;
+        QReply reply = QReply.reply;
+
+        JPQLQuery<Board> query = from(board);
+
+        // reply 를 leftjoin -> reply.board == board
+        query.leftJoin(reply).on(reply.board.eq(board));
+
+        String keyword = requestDTO.getKeyword();
+        String searchType = requestDTO.getType();
+
+        // 키워드가 not null , searchType이 not null 일 때
+        if(keyword !=  null && searchType != null){
+
+            // 문자열 -> 배열
+            // tc -> [t,c]
+            String[] searchArr = searchType.split("");
+
+            // BooleanBuiler : ()를 우선순위 연산자로 사용하기 위한 코드
+            BooleanBuilder searchBuilder = new BooleanBuilder();
+
+            for (String type : searchArr) {
+                switch(type){
+                    // 검색 조건
+                    case "t" -> searchBuilder.or(board.title.contains(keyword));
+                    case "c" -> searchBuilder.or(board.content.contains(keyword));
+                    case "w" -> searchBuilder.or(board.writer.contains(keyword));
+                }
+            } // end for
+
+            // 검색조건을 where절에 추가
+            query.where(searchBuilder);
+
+        }// end if
+
+        query.groupBy(board);
+
+        // Projections.bean() : DTO 객체를 선택하기 위해 사용되며, BoardListRcntDTO 클래스와 해당 클래스의 필드 값을 지정
+        // as("replyCount")는 선택한 결과를 replyCount라는 이름으로 지정
+        // =>  BoardListRcntDTO를 선택하고, Board 엔티티의 필드 값을 DTO에 매핑하여 쿼리 결과로 반환하도록 설정(DTO 객체로 변환하여 활용가능)
+        JPQLQuery<BoardListRcntDTO> listQuery =
+                query.select(Projections.bean(
+                                BoardListRcntDTO.class,
+                                board.bno ,
+                                board.title ,
+                                board.writer ,
+                                reply.countDistinct().as("replyCount")
+                        )
+                );
+
+        List<BoardListRcntDTO> list = listQuery.fetch();
+
+        // 페이징 처리
+        this.getQuerydsl().applyPagination(pageable, query);
+
+        log.info("========================");
+        log.info(list);
+
+        // totalCount값 호출
+        Long totalCount = listQuery.fetchCount();
+
+        log.info("========================");
+        log.info(totalCount);
+
+        return new PageResponseDTO<>(list, totalCount, requestDTO);
     }
 
 
